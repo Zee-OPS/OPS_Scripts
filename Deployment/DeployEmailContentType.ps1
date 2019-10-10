@@ -27,8 +27,8 @@ try {
 
     Write-Host "Applying configuration changes..." -ForegroundColor Green
     Write-Host "Adding Site Content Type '$ContentTypeName' to Site Collection '$SharePointUrl'"  -ForegroundColor Green
-
-    Add-PnPContentType -name $ContentTypeName -Description "Email Content Type for OnePlaceMail" -Group "Custom Content Types" -ParentContentType "Document"
+    $DocCT = Get-PnPContentType -Identity "Document"
+    Add-PnPContentType -name $ContentTypeName -Description "Email Content Type for OnePlaceMail" -Group "Custom Content Types" -ParentContentType $DocCT
 
     $EmailColumns = Get-PnPField -Group "OnePlace Solutions"
     ForEach($Column in $EmailColumns){
