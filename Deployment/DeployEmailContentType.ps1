@@ -14,9 +14,16 @@ try {
     #$SharePointUrl = Read-Host -Prompt 'Enter the url of your site collection to add the Email Content Type to'
     $SharePointUrl = "https://opsdevtest.sharepoint.com/sites/agtestoneplacesolutionsadmin"
        
-    #Connect to newly created site collection
-    Write-Host "Enter SharePoint credentials(your email address if SharePoint Online or domain\username if on-premise):" -ForegroundColor Green  
-    Connect-pnpOnline -url $SharePointUrl -UseWebLogin   
+    #Connect to site collection
+    If($SharePointUrl -match ".sharepoint.com/"){
+        Write-Host "Enter SharePoint credentials(your email address for SharePoint Online):" -ForegroundColor Green  
+        Connect-pnpOnline -url $SharePointUrl -UseWebLogin
+        }
+    Else{
+        Write-Host "Enter SharePoint credentials(domain\username):" -ForegroundColor Green  
+        Connect-pnpOnline -url $SharePointUrl
+        }
+ 
  
 
     Write-Host "Applying configuration changes..." -ForegroundColor Green
