@@ -88,7 +88,7 @@ try {
         Add-PnPContentTypeToList -List $DocLib -ContentType $script:ContentTypeName
         }
 
-     function AddContentTypeToDocumentLibrariesCSV{
+    function AddContentTypeToDocumentLibrariesCSV{
         $DocumentLibraryListFile = Read-Host -Prompt "Please enter the local path to the CSV containing the Document Libraries to add the Content Type to"
         $DocumentLibraryList = Import-Csv -Path $DocumentLibraryListFile
 
