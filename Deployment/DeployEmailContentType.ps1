@@ -11,8 +11,7 @@ try {
     If($ContentTypeName -eq ""){$ContentTypeName = "OnePlaceMail Email"}
 
     #Prompt for SharePoint Url     
-    #$SharePointUrl = Read-Host -Prompt 'Enter the url of your site collection to add the Email Content Type to'
-    $SharePointUrl = "https://opsdevtest.sharepoint.com/sites/agtestoneplacesolutionsadmin"
+    $SharePointUrl = Read-Host -Prompt 'Enter the url of your site collection to add the Email Content Type to'
        
     #Connect to site collection
     If($SharePointUrl -match ".sharepoint.com/"){
@@ -37,9 +36,6 @@ try {
         Write-Host "Adding field '$Column' to Site Content Type '$ContentTypeName'"  -ForegroundColor Green
         Add-PnPFieldToContentType -Field $Column -ContentType $ContentTypeName
         }
-    
-    #Apply-PnPProvisioningTemplate -path $Path    
-
 }
 
 catch {
