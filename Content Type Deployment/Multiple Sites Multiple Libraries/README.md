@@ -33,14 +33,6 @@ Any Site Content Types listed that already exist in your SharePoint Environment 
 Invoke-Expression (New-Object Net.WebClient).DownloadString(‘https://raw.githubusercontent.com/ashleygagregory/OPS_Scripts/master/Content%20Type%20Deployment/Multiple%20Sites%20Multiple%20Libraries/DeployECTToSitesDoclibs.ps1’)
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
