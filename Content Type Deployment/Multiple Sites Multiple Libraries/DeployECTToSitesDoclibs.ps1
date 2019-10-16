@@ -27,13 +27,13 @@ Try{
             $this.url = $url
             $this.contentTypes = @()
 
-            #Count forward slashes, if there are more than 4 then we need to check if this URL is for a subsite
+            #Count forward slashes ('/'), if there are more than 4 then we need to check if this URL is for a subsite
             $countFwdSlashes = ($this.url.ToCharArray() | Where-Object {$_ -eq '/'} | Measure-Object).Count
             
             If($countFwdSlashes -gt 4){
                 $indexLastFwdSlash = $this.url.LastIndexOf('/')
                 $indexLastFwdSlash++
-                #Check the character after the last '/', if there's a character we assume this is a subsite URL
+                #Check the character after the 5th '/', if there's a character we assume this is a subsite URL
                 If($url[$indexLastFwdSlash].Length -eq 1){
                     $this.isSubSite = $true
                 }
@@ -47,19 +47,23 @@ Try{
         }
 
         [void]addContentTypeToDocumentLibrary($contentTypeName,$docLibName){
-            If($this.documentLibraries.ContainsKey($docLibName)){
-                Write-Host "Document Library $docLibName already listed"
-                $this.documentLibraries.$docLibName
+            #Check we aren't working without a Document Library name, otherwise assume that we just want to add a Site Content Type
+            If(($docLibName -ne $null) -and ($docLibName -ne "")){
+                If($this.documentLibraries.ContainsKey($docLibName)){
+                    Write-Host "Document Library $docLibName already listed"
+                    $this.documentLibraries.$docLibName
+                }
+                Else{
+                    $tempDocLib = [docLib]::new("$docLibName")
+                    $this.documentLibraries.Add($docLibName, $tempDocLib)
+                }
+                $this.documentLibraries.$docLibName.addContentType($contentTypeName)
             }
-            Else{
-                $tempDocLib = [docLib]::new("$docLibName")
-                $this.documentLibraries.Add($docLibName, $tempDocLib)
-            }
-            $this.documentLibraries.$docLibName.addContentType($contentTypeName)
-        
+            
+            #If the named Content Type is not already listed in Site Content Types, add it to the Site Content Types
             If(-not $this.contentTypes.Contains($contentTypeName)){
                 $this.contentTypes += $contentTypeName
-            } 
+            }
         }
     }
 
@@ -159,18 +163,18 @@ Try{
     #----------------------------------------------------------------
 
     #Start with getting the CSV file of Site Collections, Document Libraries and Content Types
-    EnumerateSitesDocLibs -csvFile "C:\Users\AshleyGregory\Documents\GitHub\OPS_Scripts\Deployment\SitesDocLibs.csv"
+    EnumerateSitesDocLibs
 
     #Connect to SharePoint Online, specifically the Admin site so we can use the SPO Shell to iterate over the site collections
-    ConnectToSharePointOnlineAdmin -tenant "opsdevtest"
+    ConnectToSharePointOnlineAdmin
 
     $groupName = Read-Host -Prompt "Please enter the Group name containing the OnePlaceMail Email Columns in your SharePoint Site Collections (leave blank for default 'OnePlace Solutions')"
     If($groupName -eq ""){$groupName = "OnePlace Solutions"}
     
     #Loop through columns in group (name supplied above) searching for 'emSubject'
-    Write-Host "Testing for OnePlaceMail Email Columns..." -ForegroundColor Yellow
+    #Write-Host "Testing for OnePlaceMail Email Columns..." -ForegroundColor Yellow
     
-    #Assume columns exist for now, fix later
+    #Assume columns exist for now
     
     $foundemSubject = $true
     $EmailColumns = Get-PnPField -Group $groupName -InSiteHierarchy
