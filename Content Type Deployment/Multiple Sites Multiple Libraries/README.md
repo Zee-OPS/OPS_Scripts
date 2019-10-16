@@ -5,6 +5,7 @@ A script and sample CSV file to add OnePlace Solutions Email Columns to Content 
 ## Getting Started
 
 Download the SitesDocLibs.csv file above and customize it to your requirements. You will be prompted for this file by the script.
+
 Note that you need a new line for each uniquely named Site Content Type, and to define which Site Collection it will be created in, and (optionally) which Document Library it will be added to.
 Any Site Content Types listed that already exist in your SharePoint Environment will have the Email Columns added to it (and preserve the existing columns).
 
